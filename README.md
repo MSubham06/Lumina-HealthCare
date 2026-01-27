@@ -35,74 +35,89 @@ This project is structured to provide a complete user journey for patients:
 
 ---
 
-## 📸 Screenshots
+## 🗺️ Project Roadmap & Strategy
 
-| Desktop View | Mobile View |
-|:---:|:---:|
-| ![Desktop Screenshot](path/to/desktop-image.png) | ![Mobile Screenshot](path/to/mobile-image.png) |
-
-*(Note: Will update soon!)*
-
----
-
-## 🚀 Getting Started
-
-Follow these instructions to set up the project locally on your machine.
-
-### Prerequisites
-
-* [Node.js](https://nodejs.org/) installed (if using React/Vue/Angular)
-* A code editor (VS Code recommended)
-
-### Installation
-
-1.  **Clone the repository**
-    ```bash
-    git clone [https://github.com/your-username/clinic-landing-showcase.git](https://github.com/your-username/clinic-landing-showcase.git)
-    ```
-
-2.  **Navigate to the project directory**
-    ```bash
-    cd clinic-landing-showcase
-    ```
-
-3.  **Install dependencies**
-    ```bash
-    npm install
-    ```
-
-4.  **Run the application**
-    ```bash
-    npm start
-    ```
+### Phase 1: High-Level Strategy
+* **Preparation:** Gather assets and define the "Brand Personality" (Trustworthy, Clean, Modern).
+* **Skeleton:** Set up the routing and layout structure (Header/Footer).
+* **The "Hook" (Above the Fold):** Build the Hero section to capture attention immediately.
+* **Trust Building:** Build the About, Doctor Profile, and Testimonials sections.
+* **Conversion:** Build Services and the Appointment Booking Form.
+* **Utility:** Add Locations/Maps and Contact info.
+* **Polish:** Mobile responsiveness check and accessibility audit.
 
 ---
 
-## 📂 Project Structure
+## ✅ Step-by-Step To-Do List
 
-```text
-/src
-  ├── /components
-  │     ├── Navbar.js
-  │     ├── Hero.js
-  │     ├── DoctorProfile.js
-  │     ├── Services.js
-  │     ├── AppointmentForm.js
-  │     └── Footer.js
-  ├── /assets
-  │     └── /images
-  ├── App.js
-  └── index.js
-```
+### 1. Setup & Config
+- [x] Initialize Vite React project.
+- [x] Configure Tailwind CSS colors (Medical Blue palette).
+- [x] Install `lucide-react` for icons.
 
-## 🎨 Customization
+### 2. Component Development
+- [ ] **Navbar:** Sticky header with logo and mobile hamburger menu.
+- [ ] **Hero Section:** High-quality image, headline, and "Book Now" button.
+- [ ] **Stats Bar:** Small strip showing "15+ Years Experience", "5000+ Patients".
+- [ ] **About Section:** Text on left, image on right layout.
+- [ ] **Services Grid:** Cards with icons describing treatments.
+- [ ] **Doctor Profile:** A dedicated card with photo, bio, and credentials.
+- [ ] **Booking Form:** Input fields for Name, Phone, Date, Reason.
+- [ ] **Footer:** Links, Address, and Copyright.
 
-This template is designed to be easily white-labeled for different clients.
+### 3. Integration & Polish
+- [ ] Connect all components to `App.jsx`.
+- [ ] Verify mobile view (Hamburger menu works? text readable?).
+- [ ] Add hover effects to buttons.
 
-* **Colors:** Modify the primary color variable in `App.css` to match the clinic's branding.
-* **Content:** Update `data.js` (or hardcoded text) with the specific Doctor's bio and services.
-* **Map:** Replace the Google Maps `iframe` source in the Footer component with the client's location.
+---
 
+## 🎒 The Gathering List (Pre-Build Requirements)
+
+### Images (Stock or Placeholder)
+* 1x Hero Image (Doctor talking to patient or clean waiting room).
+* 1x Doctor Portrait (Professional headshot).
+* 1x Clinic Interior (Clean, bright).
+
+### Icons
+* We will use `lucide-react`.
+* **Needs:** Stethoscope, Heart, Calendar, Phone, Map Pin.
+
+### Color Palette
+* **Primary:** `#0077b6` (Deep Blue / Trust)
+* **Secondary:** `#90e0ef` (Cyan / Calm)
+* **Background:** `#ffffff` (White / Cleanliness)
+
+---
+
+## 📄 The "Dummy Data" Pack
+
+**1. The Brand**
+* **Clinic Name:** Lumina Health Clinic
+* **Tagline:** "Compassionate Care, Modern Medicine."
+
+**2. The Doctor Persona**
+* **Name:** Dr. Sarah Bennett, MD
+* **Specialization:** Senior General Practitioner & Cardiologist
+* **Experience:** 15+ Years
+* **Education:** MD from Stanford Medicine, Residency at Mayo Clinic
+* **Bio:** "Dr. Bennett is dedicated to providing comprehensive care with a focus on preventative medicine. She believes in treating the person, not just the symptoms."
+
+**3. Services (Card Data)**
+* **General Consultation:** Routine checkups and health screenings.
+* **Cardiology:** Heart health monitoring and ECG services.
+* **Pediatrics:** Compassionate care for infants and children.
+* **Vaccinations:** Flu shots and travel immunizations.
+
+**4. Contact & Location**
+* **Address:** 123 Wellness Blvd, Health City, HC 54321
+* **Phone:** (555) 123-4567
+* **Email:** appointment@luminahealth.com
+* **Hours:** Mon-Fri: 9:00 AM - 6:00 PM | Sat: 10:00 AM - 2:00 PM
+
+**5. Testimonials**
+* "The clinic is spotless and Dr. Bennett actually listens." — *Mark T.*
+* "Booking online was so easy. Highly recommended." — *Emily R.*
 ---
 
 ## 🤝 Contact
