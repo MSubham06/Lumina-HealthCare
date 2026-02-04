@@ -6,3 +6,15 @@
 html {
   scroll-behavior: smooth;
 }
+
+/* FIX: Prevent cursor from turning into text-select bar everywhere */
+body {
+  cursor: default; /* Forces the arrow cursor */
+  -webkit-font-smoothing: antialiased; /* Makes text look sharper */
+}
+
+/* Optional: Prevent blue highlighting when people click multiple times */
+::selection {
+  background-color: #90e0ef; /* Your Brand Secondary Color */
+  color: #0077b6; /* Your Brand Primary Color */
+}
