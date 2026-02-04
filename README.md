@@ -51,24 +51,26 @@ This project is structured to provide a complete user journey for patients:
 ## ✅ Step-by-Step To-Do List
 
 ### 1. Setup & Config
-- [ ] Initialize Vite React project.
-- [ ] Configure Tailwind CSS colors (Medical Blue palette).
-- [ ] Install `lucide-react` for icons.
+- [X] Initialize Vite React project.
+- [X] Configure Tailwind CSS colors (Medical Blue palette).
+- [X] Install `lucide-react` for icons.
 
 ### 2. Component Development
-- [ ] **Navbar:** Sticky header with logo and mobile hamburger menu.
-- [ ] **Hero Section:** High-quality image, headline, and "Book Now" button.
-- [ ] **Stats Bar:** Small strip showing "15+ Years Experience", "5000+ Patients".
-- [ ] **About Section:** Text on left, image on right layout.
-- [ ] **Services Grid:** Cards with icons describing treatments.
-- [ ] **Doctor Profile:** A dedicated card with photo, bio, and credentials.
+- [X] **Navbar:** Sticky header with logo and mobile hamburger menu.
+- [X] **Hero Section:** High-quality image, headline, and "Book Now" button.
+- [X] **Stats Bar:** Small strip showing "15+ Years Experience", "5000+ Patients".
+- [X] **About Section:** Text on left, image on right layout.
+- [X] **Services Grid:** Cards with icons describing treatments.
+- [X] **Doctor Profile:** A dedicated card with photo, bio, and credentials.
+- [X] **Facilities Carousel:** (New) Interactive slider showcasing the clinic's advanced equipment.
 - [ ] **Booking Form:** Input fields for Name, Phone, Date, Reason.
 - [ ] **Footer:** Links, Address, and Copyright.
 
 ### 3. Integration & Polish
 - [ ] Connect all components to `App.jsx`.
+- [ ] Make everything responsive and best fit for Mobile
 - [ ] Verify mobile view (Hamburger menu works? text readable?).
-- [x] Add hover effects to buttons.
+- [ ] Add hover effects to buttons.
 
 ---
 
