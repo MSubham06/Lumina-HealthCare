@@ -26,7 +26,6 @@ const Facilities = () => {
     { id: 8, image: Facility8, title: "Main Reception", desc: "Efficient check-in with a personal touch." },
   ];
 
-  // Auto-play logic
   useEffect(() => {
     let interval;
     if (isAutoPlaying) {
@@ -54,7 +53,7 @@ const Facilities = () => {
   return (
     <section 
       id="facilities" 
-      className="py-16 md:py-24 bg-white relative overflow-hidden"
+      className="py-16 bg-white relative overflow-hidden"
     >
        {/* Background Decor */}
        <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(#e5e7eb_1.5px,transparent_1.5px)] [background-size:24px_24px] opacity-40"></div>
@@ -62,15 +61,18 @@ const Facilities = () => {
 
       <div className="container mx-auto px-4 md:px-6 relative z-10">
         
-        {/* Header */}
-        <div className="max-w-6xl mx-auto mb-8 text-center md:text-left flex flex-col md:flex-row items-end justify-between gap-6">
-          <div>
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-50 border border-blue-100 text-primary text-xs font-bold uppercase tracking-widest mb-4">
-              <span className="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+        {/* Header - Fixed Alignment */}
+        {/* CHANGED: 'items-start' forces left alignment on mobile. 'md:items-end' keeps bottom alignment on desktop. */}
+        <div className="max-w-5xl mx-auto mb-8 flex flex-col md:flex-row items-start md:items-end justify-between gap-6">
+          <div className="text-left">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 border border-blue-100 text-primary text-xs font-bold uppercase tracking-widest mb-3">
+              <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span>
               World-Class Infrastructure
             </div>
+            
             <h2 className="text-3xl md:text-4xl font-black text-gray-900 tracking-tighter leading-tight">
-              Designed for <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary">precision & comfort.</span>
+              Designed for <br className="block md:hidden" />
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary">precision & comfort.</span>
             </h2>
           </div>
           
@@ -92,12 +94,7 @@ const Facilities = () => {
         </div>
 
         {/* --- MAIN CAROUSEL --- */}
-        {/* UPDATED: 
-           - 'max-w-6xl': Wider overall container.
-           - 'aspect-[16/9]': Shorter on Mobile.
-           - 'md:aspect-[21/9]': Ultra-wide panoramic on Desktop. 
-        */}
-        <div className="relative w-full max-w-6xl mx-auto aspect-[16/9] md:aspect-[21/9] rounded-[2rem] overflow-hidden shadow-[0_20px_40px_-10px_rgba(0,0,0,0.2)] group bg-gray-100">
+        <div className="relative w-full max-w-5xl mx-auto aspect-[16/9] md:aspect-[21/9] rounded-[2rem] overflow-hidden shadow-[0_20px_40px_-10px_rgba(0,0,0,0.2)] group bg-gray-100">
           
           {/* Images Layer */}
           {facilities.map((facility, index) => (
@@ -115,12 +112,12 @@ const Facilities = () => {
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
 
               {/* Caption Content */}
-              <div className="absolute bottom-0 left-0 w-full p-6 md:p-10 text-white z-20">
+              <div className="absolute bottom-0 left-0 w-full p-8 text-white z-20">
                 <div className={`transition-all duration-500 delay-200 transform ${index === currentIndex ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'}`}>
-                  <h3 className="text-lg md:text-3xl font-bold mb-1 leading-tight">{facility.title}</h3>
+                  <h3 className="text-xl md:text-3xl font-bold mb-2 leading-tight">{facility.title}</h3>
                   <div className="flex items-center gap-2">
-                    <CheckCircle2 size={16} className="text-green-400 shrink-0" />
-                    <p className="text-xs md:text-base text-gray-200 font-medium line-clamp-1">{facility.desc}</p>
+                    <CheckCircle2 size={18} className="text-green-400 shrink-0" />
+                    <p className="text-sm md:text-base text-gray-200 font-medium line-clamp-1">{facility.desc}</p>
                   </div>
                 </div>
               </div>
@@ -129,16 +126,16 @@ const Facilities = () => {
 
           {/* Mobile Touch Targets */}
           <div 
-            className="absolute inset-y-0 left-0 w-12 bg-gradient-to-r from-black/20 to-transparent z-30 md:hidden flex items-center justify-start pl-2 active:bg-black/30 transition-colors" 
+            className="absolute inset-y-0 left-0 w-16 bg-gradient-to-r from-black/20 to-transparent z-30 md:hidden flex items-center justify-start pl-2 active:bg-black/30 transition-colors" 
             onClick={() => handleManualNav('prev')}
           >
-            <ChevronLeft className="text-white/90 drop-shadow-md" size={28}/>
+            <ChevronLeft className="text-white/90 drop-shadow-md" size={32}/>
           </div>
           <div 
-            className="absolute inset-y-0 right-0 w-12 bg-gradient-to-l from-black/20 to-transparent z-30 md:hidden flex items-center justify-end pr-2 active:bg-black/30 transition-colors" 
+            className="absolute inset-y-0 right-0 w-16 bg-gradient-to-l from-black/20 to-transparent z-30 md:hidden flex items-center justify-end pr-2 active:bg-black/30 transition-colors" 
             onClick={() => handleManualNav('next')}
           >
-            <ChevronRight className="text-white/90 drop-shadow-md" size={28}/>
+            <ChevronRight className="text-white/90 drop-shadow-md" size={32}/>
           </div>
 
         </div>

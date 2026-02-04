@@ -63,7 +63,7 @@ const Services = () => {
     <section 
       id="services" 
       ref={sectionRef} 
-      className="py-24 bg-white relative overflow-hidden"
+      className="py-12 md:py-24 bg-white relative overflow-hidden"
     >
       
       {/* --- BACKGROUND DECOR --- */}
@@ -74,33 +74,30 @@ const Services = () => {
       <div className="container mx-auto px-4 md:px-6 relative z-10">
         
         {/* Section Header */}
-        <div className={`text-center max-w-2xl mx-auto mb-16 transition-all duration-1000 ease-out transform ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/80 backdrop-blur-sm border border-gray-200 text-primary text-xs font-bold uppercase tracking-widest mb-6 shadow-[0_4px_10px_rgba(0,0,0,0.05)]">
+        <div className={`text-center max-w-2xl mx-auto mb-8 md:mb-16 transition-all duration-1000 ease-out transform ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/80 backdrop-blur-sm border border-gray-200 text-primary text-xs font-bold uppercase tracking-widest mb-4 md:mb-6 shadow-[0_4px_10px_rgba(0,0,0,0.05)]">
             <span className="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
             Our Expertise
           </div>
           
-          <h2 className="text-3xl md:text-5xl font-black text-gray-900 mb-6 tracking-tighter drop-shadow-sm leading-tight">
+          <h2 className="text-3xl md:text-5xl font-black text-gray-900 mb-4 md:mb-6 tracking-tighter drop-shadow-sm leading-tight">
             Comprehensive care for <br className="hidden md:block" />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary">every stage of life.</span>
           </h2>
 
-          <p className="text-lg text-gray-500 font-medium leading-relaxed">
+          <p className="text-base md:text-lg text-gray-500 font-medium leading-relaxed">
             We combine advanced medical technology with a human touch. Choose a service to learn more.
           </p>
         </div>
 
         {/* Services Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-8">
           {services.map((service, index) => (
             <div 
               key={service.id} 
-              // UPDATED CLASSES FOR SHARPNESS:
-              // 1. antialiased: Sharpens font
-              // 2. [backface-visibility:hidden]: Prevents blur on rotate
-              // 3. [transform:translateZ(0)]: Hardware accelerates without blurring
               className={`
-                bg-white/60 backdrop-blur-md rounded-[2rem] p-8 border border-gray-100 
+                bg-white/60 backdrop-blur-md rounded-[1.5rem] md:rounded-[2rem] 
+                p-4 md:p-8 border border-gray-100 
                 shadow-[0_20px_40px_-10px_rgba(0,0,0,0.08)] 
                 
                 transform-gpu transition-all duration-500 ease-out group cursor-pointer flex flex-col
@@ -117,23 +114,25 @@ const Services = () => {
               style={{ transitionDelay: isVisible ? `${index * 100}ms` : '0ms' }}
             >
               {/* Icon Bubble */}
-              <div className={`${service.color} w-16 h-16 rounded-2xl flex items-center justify-center mb-6 shadow-lg ${service.shadow} group-hover:scale-110 group-hover:rotate-3 transition-all duration-300`}>
-                {service.icon}
+              <div className={`${service.color} w-12 h-12 md:w-16 md:h-16 rounded-xl md:rounded-2xl flex items-center justify-center mb-4 md:mb-6 shadow-lg ${service.shadow} group-hover:scale-110 group-hover:rotate-3 transition-all duration-300`}>
+                {React.cloneElement(service.icon, { size: undefined, className: "text-white w-6 h-6 md:w-8 md:h-8" })}
               </div>
 
-              <h3 className="text-2xl font-black text-gray-900 mb-3 group-hover:text-primary transition-colors">
+              {/* Title */}
+              <h3 className="text-lg md:text-2xl font-black text-gray-900 mb-2 md:mb-3 group-hover:text-primary transition-colors leading-tight">
                 {service.title}
               </h3>
               
-              <p className="text-gray-500 font-medium leading-relaxed mb-6 flex-grow">
+              {/* Description - UPDATED: Removed line-clamp classes to show full text */}
+              <p className="text-xs md:text-base text-gray-500 font-medium leading-relaxed mb-4 md:mb-6 flex-grow">
                 {service.description}
               </p>
 
               <a 
                 href="#contact" 
-                className="inline-flex items-center gap-2 text-primary font-bold text-sm uppercase tracking-wider group-hover:gap-3 transition-all mt-auto"
+                className="inline-flex items-center gap-1 md:gap-2 text-primary font-bold text-xs md:text-sm uppercase tracking-wider group-hover:gap-2 md:group-hover:gap-3 transition-all mt-auto"
               >
-                Book Now <ArrowRight size={16} />
+                Book Now <ArrowRight size={14} className="md:w-4 md:h-4" />
               </a>
             </div>
           ))}

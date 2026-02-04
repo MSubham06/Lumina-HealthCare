@@ -40,7 +40,8 @@ const Doctors = () => {
     <section 
       id="doctors" 
       ref={sectionRef}
-      className="min-h-screen flex flex-col justify-center py-20 bg-white relative overflow-hidden"
+      // UPDATED: Removed 'min-h-screen' and reduced mobile padding to 'py-12'
+      className="py-12 md:py-24 bg-white relative overflow-hidden"
     >
       {/* Background Decor */}
       <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(#e5e7eb_1.5px,transparent_1.5px)] [background-size:24px_24px] opacity-40"></div>
@@ -50,8 +51,8 @@ const Doctors = () => {
       <div className="container mx-auto px-4 md:px-6 relative z-10">
         
         {/* Section Header */}
-        <div className={`text-center max-w-2xl mx-auto mb-12 transition-all duration-1000 ease-out transform ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/80 backdrop-blur-sm border border-gray-200 text-primary text-xs font-bold uppercase tracking-widest mb-6 shadow-sm">
+        <div className={`text-center max-w-2xl mx-auto mb-8 md:mb-12 transition-all duration-1000 ease-out transform ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/80 backdrop-blur-sm border border-gray-200 text-primary text-xs font-bold uppercase tracking-widest mb-4 md:mb-6 shadow-sm">
             <span className="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
             Our Top Specialists
           </div>
@@ -60,20 +61,20 @@ const Doctors = () => {
           </h2>
         </div>
 
-        {/* Doctor Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        {/* Doctor Grid - 2 Cols on Mobile */}
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-6">
           
           {doctors.map((doctor, index) => (
             <div 
               key={doctor.id} 
               className={`
-                group bg-white rounded-[2rem] p-4 shadow-[0_20px_40px_-12px_rgba(0,0,0,0.1)] 
+                group bg-white rounded-[1.5rem] md:rounded-[2rem] p-3 md:p-4 shadow-[0_20px_40px_-12px_rgba(0,0,0,0.1)] 
                 hover:shadow-[0_30px_60px_-12px_rgba(0,0,0,0.15)] 
                 
                 transform-gpu transition-all duration-500 ease-out hover:-translate-y-2 cursor-default
                 antialiased [backface-visibility:hidden] [transform:translateZ(0)]
 
-                /* MOBILE VISIBILITY LOGIC */
+                /* VISIBILITY LOGIC */
                 ${index >= 2 && !showAll ? 'hidden md:block' : 'block'}
 
                 /* ANIMATION STATES */
@@ -82,7 +83,7 @@ const Doctors = () => {
               `}
             >
               {/* Image Area */}
-              <div className="relative aspect-[3/4] w-full rounded-[1.5rem] overflow-hidden mb-4 shadow-inner">
+              <div className="relative aspect-[3/4] w-full rounded-[1rem] md:rounded-[1.5rem] overflow-hidden mb-3 md:mb-4 shadow-inner">
                 <div className="absolute inset-0 bg-gradient-to-t from-primary/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10"></div>
                 
                 <img 
@@ -93,7 +94,7 @@ const Doctors = () => {
                 
                 {/* Floating Role Badge */}
                 <div className="absolute bottom-3 left-3 z-20 translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300">
-                   <span className="bg-white/95 backdrop-blur text-xs font-black text-primary px-3 py-1.5 rounded-full shadow-sm">
+                   <span className="bg-white/95 backdrop-blur text-[10px] md:text-xs font-black text-primary px-2 md:px-3 py-1 md:py-1.5 rounded-full shadow-sm">
                      {doctor.role}
                    </span>
                 </div>
@@ -101,10 +102,10 @@ const Doctors = () => {
 
               {/* Minimalist Text Info */}
               <div className="text-center">
-                <h3 className="text-xl font-black text-gray-900 tracking-tight mb-1 group-hover:text-primary transition-colors">
+                <h3 className="text-sm md:text-xl font-black text-gray-900 tracking-tight mb-0.5 md:mb-1 group-hover:text-primary transition-colors line-clamp-1">
                   {doctor.name}
                 </h3>
-                <p className="text-xs font-bold text-gray-400 uppercase tracking-widest">
+                <p className="text-[10px] md:text-xs font-bold text-gray-400 uppercase tracking-widest line-clamp-1">
                   {doctor.role}
                 </p>
               </div>
@@ -118,7 +119,6 @@ const Doctors = () => {
         <div className={`mt-8 text-center md:hidden transition-all duration-500 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-5'}`}>
           <button 
             onClick={() => setShowAll(!showAll)}
-            // CHANGED: bg-primary (Blue), text-white, and Blue Shadow
             className="inline-flex items-center gap-2 bg-primary text-white px-8 py-3 rounded-full font-bold text-sm shadow-[0_10px_20px_-5px_rgba(14,165,233,0.5)] hover:shadow-[0_15px_30px_-5px_rgba(14,165,233,0.6)] hover:-translate-y-0.5 transition-all active:scale-95 group"
           >
             {showAll ? 'Show Less' : 'View More Doctors'}
