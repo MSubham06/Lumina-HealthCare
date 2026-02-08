@@ -5,8 +5,9 @@ import Hero from './components/Hero';
 import Stats from './components/Stats';
 import About from './components/About';
 import Services from './components/Services';
-import Facilities from './components/Facilities'; // 1. Import Facilities
+import Facilities from './components/Facilities';
 import Doctors from './components/Doctors';
+import Footer from './components/Footer'; // <--- Import Footer
 import DoctorBio from './components/DoctorBio';
 
 const Home = () => {
@@ -17,11 +18,9 @@ const Home = () => {
       <Stats />
       <About />
       <Services />
-      <Doctors />
       <Facilities />
-      
-      {/* Spacer */}
-      <div className="h-[100px] bg-gray-50"></div>
+      <Doctors />
+      <Footer /> {/* <--- Add Footer Here */}
     </>
   );
 };

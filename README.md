@@ -3,7 +3,6 @@
 > A professional, responsive landing page template for medical clinics featuring doctor profiles, service details, and an integrated appointment booking system.
 
 ![Project Status](https://img.shields.io/badge/Status-Developing-blue)
-![License](https://img.shields.io/badge/License-MIT-blue)
 
 ## Overview
 
@@ -67,7 +66,7 @@ This project is structured to provide a complete user journey for patients:
 - [ ] **Footer:** Links, Address, and Copyright.
 
 ### 3. Integration & Polish
-- [ ] Connect all components to `App.jsx`.
+- [x] Connect all components to `App.jsx`.
 - [ ] Make everything responsive and best fit for Mobile
 - [ ] Verify mobile view (Hamburger menu works? text readable?).
 - [ ] Add hover effects to buttons.
