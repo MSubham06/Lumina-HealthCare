@@ -7,7 +7,8 @@ import About from './components/About';
 import Services from './components/Services';
 import Facilities from './components/Facilities';
 import Doctors from './components/Doctors';
-import Footer from './components/Footer'; // <--- Import Footer
+import Appointment from './components/Appointment'; // <--- FIXED NAME HERE
+import Footer from './components/Footer'; 
 import DoctorBio from './components/DoctorBio';
 
 const Home = () => {
@@ -20,7 +21,8 @@ const Home = () => {
       <Services />
       <Facilities />
       <Doctors />
-      <Footer /> {/* <--- Add Footer Here */}
+      <Appointment /> {/* <--- Now this matches the import */}
+      <Footer />
     </>
   );
 };
