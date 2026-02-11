@@ -2,6 +2,10 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Phone, Mail, MapPin, Calendar, User, Clock, CheckCircle, ChevronDown, Loader2, Copy, Check } from 'lucide-react';
 
 const Appointment = () => {
+  // --- CONFIGURATION ---
+  // YOUR GOOGLE SCRIPT URL
+  const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyznHixbNannkZHx9YEi1E2rMp4yDItu33CaaKd8Vagp68BAp2G1TbcCYc86HLey7Q/exec";
+
   // --- DATA: FULL COUNTRY LIST ---
   const countries = [
     { code: "+93", name: "Afghanistan", flag: "🇦🇫" },
@@ -248,7 +252,7 @@ const Appointment = () => {
     setErrors(newErrors);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const finalErrors = {};
     if (!formData.name) finalErrors.name = "Name Is Required.";
@@ -263,14 +267,34 @@ const Appointment = () => {
 
     setLoading(true);
 
-    setTimeout(() => {
+    const dataToSend = new URLSearchParams();
+    dataToSend.append("date", formData.date);
+    dataToSend.append("time", formData.time);
+    dataToSend.append("name", formData.name);
+    dataToSend.append("phone", formData.phone);
+    dataToSend.append("countryCode", formData.country.code);
+    dataToSend.append("department", formData.department);
+    dataToSend.append("message", formData.message);
+
+    try {
+      await fetch(GOOGLE_SCRIPT_URL, {
+        method: "POST",
+        mode: "no-cors",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: dataToSend,
+      });
+
       setLoading(false);
       setSubmitted(true);
       setFormData({
         name: '', phone: '', country: countries.find(c => c.name === "United States") || countries[0], date: '', time: 'Morning (9AM - 12PM)', department: '', message: ''
       });
       setTimeout(() => setSubmitted(false), 5000); 
-    }, 2000);
+    } catch (error) {
+      console.error("Error submitting form", error);
+      setLoading(false);
+      alert("Something went wrong. Please try again.");
+    }
   };
 
   const contactInfo = [
@@ -373,10 +397,10 @@ const Appointment = () => {
               </div>
             ) : (
             
-            // INCREASED SPACING: space-y-6
-            <form onSubmit={handleSubmit} className="space-y-6">
+            // INCREASED SPACING (gap-6, space-y-8) to fill vertical space
+            <form onSubmit={handleSubmit} className="space-y-8">
               
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 
                 {/* Name */}
                 <div className="space-y-1">
@@ -389,8 +413,8 @@ const Appointment = () => {
                     value={formData.name}
                     onChange={handleChange}
                     placeholder="John Doe" 
-                    // Taller Input: py-3
-                    className={`w-full px-3 py-3 rounded-lg bg-gray-50 border ${errors.name ? 'border-red-500 bg-red-50' : 'border-gray-200 hover:border-blue-400'} focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all duration-300 font-medium text-gray-700 placeholder-gray-400 text-sm`} 
+                    // INCREASED HEIGHT: py-4
+                    className={`w-full px-4 py-4 rounded-lg bg-gray-50 border ${errors.name ? 'border-red-500 bg-red-50' : 'border-gray-200 hover:border-blue-400'} focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all duration-300 font-medium text-gray-700 placeholder-gray-400 text-sm`} 
                   />
                   {errors.name && <p className="text-[10px] text-red-500 font-bold ml-1">{errors.name}</p>}
                 </div>
@@ -406,15 +430,15 @@ const Appointment = () => {
                     <div className="relative w-[5.5rem] shrink-0" ref={countryRef}>
                         <div 
                           onClick={() => setIsCountryOpen(!isCountryOpen)}
-                          // Taller Input: h-[46px] to match py-3 text input
-                          className="w-full px-2 py-3 rounded-lg bg-gray-50 border border-gray-200 hover:border-blue-400 cursor-pointer flex justify-between items-center transition-all h-[46px]"
+                          // INCREASED HEIGHT: h-[54px] (matches py-4)
+                          className="w-full px-2 py-4 rounded-lg bg-gray-50 border border-gray-200 hover:border-blue-400 cursor-pointer flex justify-between items-center transition-all h-[54px]"
                         >
                             <span className="text-lg leading-none">{formData.country.flag}</span>
                             <span className="text-xs font-bold text-gray-700">{formData.country.code}</span>
                             <ChevronDown size={10} className="text-gray-400" />
                         </div>
                         {isCountryOpen && (
-                          <div className="absolute top-full left-0 w-48 mt-1 bg-white border border-gray-100 rounded-xl shadow-xl max-h-60 overflow-y-auto animate-in fade-in slide-in-from-top-2 duration-200 custom-scrollbar">
+                          <div className="absolute top-full left-0 w-64 mt-1 bg-white border border-gray-100 rounded-xl shadow-xl max-h-60 overflow-y-auto animate-in fade-in slide-in-from-top-2 duration-200 custom-scrollbar z-50">
                              {countries.map((c, idx) => (
                                <div 
                                  key={idx}
@@ -422,10 +446,10 @@ const Appointment = () => {
                                    setFormData({ ...formData, country: c });
                                    setIsCountryOpen(false);
                                  }}
-                                 className="px-3 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-primary cursor-pointer flex items-center gap-3 transition-colors border-b border-gray-50 last:border-0"
+                                 className="px-3 py-3 text-sm text-gray-700 hover:bg-blue-50 hover:text-primary cursor-pointer flex items-center gap-3 transition-colors border-b border-gray-50 last:border-0"
                                >
-                                 <span className="text-lg">{c.flag}</span>
-                                 <span className="font-medium text-gray-500 w-8">{c.code}</span>
+                                 <span className="text-xl">{c.flag}</span>
+                                 <span className="font-medium text-gray-500 w-10 text-right">{c.code}</span>
                                  <span className="truncate text-xs font-bold">{c.name}</span>
                                </div>
                              ))}
@@ -439,8 +463,8 @@ const Appointment = () => {
                       value={formData.phone}
                       onChange={handleChange}
                       placeholder="00000 00000" 
-                      // Taller Input: py-3
-                      className={`flex-1 px-3 py-3 rounded-lg bg-gray-50 border ${errors.phone ? 'border-red-500 bg-red-50' : 'border-gray-200 hover:border-blue-400'} focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all duration-300 font-medium text-gray-700 placeholder-gray-400 text-sm h-[46px]`} 
+                      // INCREASED HEIGHT: py-4, h-[54px]
+                      className={`flex-1 px-4 py-4 rounded-lg bg-gray-50 border ${errors.phone ? 'border-red-500 bg-red-50' : 'border-gray-200 hover:border-blue-400'} focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all duration-300 font-medium text-gray-700 placeholder-gray-400 text-sm h-[54px]`} 
                     />
                   </div>
                   {errors.phone && <p className="text-[10px] text-red-500 font-bold ml-1">{errors.phone}</p>}
@@ -457,8 +481,8 @@ const Appointment = () => {
                     min={getTodayDate()}
                     value={formData.date}
                     onChange={handleChange}
-                    // Taller Input: py-3
-                    className={`w-full px-3 py-3 rounded-lg bg-gray-50 border ${errors.date ? 'border-red-500' : 'border-gray-200 hover:border-blue-400'} focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all duration-300 font-medium text-gray-700 text-sm`} 
+                    // INCREASED HEIGHT: py-4
+                    className={`w-full px-4 py-4 rounded-lg bg-gray-50 border ${errors.date ? 'border-red-500' : 'border-gray-200 hover:border-blue-400'} focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all duration-300 font-medium text-gray-700 text-sm`} 
                   />
                   {errors.date && <p className="text-[10px] text-red-500 font-bold ml-1">{errors.date}</p>}
                 </div>
@@ -470,15 +494,15 @@ const Appointment = () => {
                   </label>
                   <div 
                     onClick={() => setIsTimeOpen(!isTimeOpen)}
-                    // Taller Input: h-[46px]
-                    className={`w-full px-3 py-3 rounded-lg bg-gray-50 border cursor-pointer flex justify-between items-center transition-all duration-300 h-[46px]
+                    // INCREASED HEIGHT: h-[54px]
+                    className={`w-full px-4 py-4 rounded-lg bg-gray-50 border cursor-pointer flex justify-between items-center transition-all duration-300 h-[54px]
                       ${isTimeOpen ? 'border-primary ring-2 ring-primary/20' : 'border-gray-200 hover:border-blue-400'}`}
                   >
                     <span className="text-sm font-medium text-gray-700">{formData.time}</span>
                     <ChevronDown size={14} className={`text-gray-500 transition-transform duration-300 ${isTimeOpen ? 'rotate-180' : ''}`} />
                   </div>
                   {isTimeOpen && (
-                    <div className="absolute top-full left-0 w-full mt-1 bg-white border border-gray-100 rounded-xl shadow-xl overflow-hidden animate-in fade-in slide-in-from-top-2 duration-200">
+                    <div className="absolute top-full left-0 w-full mt-1 bg-white border border-gray-100 rounded-xl shadow-xl overflow-hidden animate-in fade-in slide-in-from-top-2 duration-200 z-50">
                       {timeOptions.map((time) => (
                         <div 
                           key={time}
@@ -486,7 +510,7 @@ const Appointment = () => {
                             setFormData({ ...formData, time: time });
                             setIsTimeOpen(false);
                           }}
-                          className="px-4 py-2.5 text-sm text-gray-700 hover:bg-blue-50 hover:text-primary cursor-pointer transition-colors"
+                          className="px-4 py-3 text-sm text-gray-700 hover:bg-blue-50 hover:text-primary cursor-pointer transition-colors"
                         >
                           {time}
                         </div>
@@ -499,7 +523,7 @@ const Appointment = () => {
               {/* Department */}
               <div className="space-y-1">
                 <label className="text-xs font-bold text-gray-700">Department</label>
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                   {['General', 'Cardiology', 'Pediatrics', 'Neurology'].map((dept) => (
                     <label key={dept} className="cursor-pointer">
                       <input 
@@ -517,7 +541,8 @@ const Appointment = () => {
                         }}
                         className="peer sr-only" 
                       />
-                      <div className={`px-2 py-3 rounded-lg border text-xs font-semibold text-center transition-all duration-200
+                      {/* INCREASED HEIGHT: py-4 */}
+                      <div className={`px-2 py-4 rounded-lg border text-xs font-semibold text-center transition-all duration-200
                         ${formData.department === dept 
                             ? 'bg-primary text-white border-primary shadow-lg shadow-primary/30 scale-[1.02]' 
                             : 'bg-gray-50 border-gray-200 text-gray-500 hover:bg-gray-100 hover:border-blue-400 hover:text-gray-700'
@@ -539,9 +564,10 @@ const Appointment = () => {
                     name="message"
                     value={formData.message}
                     onChange={handleChange}
-                    rows="2" 
+                    // INCREASED HEIGHT: rows=3
+                    rows="3" 
                     placeholder="Tell Us About Your Symptoms..." 
-                    className="w-full px-3 py-3 rounded-lg bg-gray-50 border border-gray-200 hover:border-blue-400 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all duration-300 font-medium text-gray-700 placeholder-gray-400 resize-none text-sm"
+                    className="w-full px-4 py-4 rounded-lg bg-gray-50 border border-gray-200 hover:border-blue-400 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all duration-300 font-medium text-gray-700 placeholder-gray-400 resize-none text-sm"
                 ></textarea>
               </div>
 
