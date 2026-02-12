@@ -147,6 +147,18 @@ Follow these steps to set up the project locally after cloning:
 
 ---
 
+## 🔑 Admin Credentials (Reception Access)
+
+To access the Reception Dashboard, go to `/admin` (e.g., `http://localhost:5173/admin`).
+
+| Role | Username / Email | Password |
+| :--- | :--- | :--- |
+| **Receptionist** | `admin@lumina.com` | `lumina123` |
+
+> **Security Note:** These credentials are currently hardcoded in `src/components/Login.jsx`. For a production environment, please change them in the code or implement a backend authentication service.
+
+---
+
 ## 🤝 Contact
 
 If you are a doctor or clinic manager interested in a website like this, feel free to reach out:
