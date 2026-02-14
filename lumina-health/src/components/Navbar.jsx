@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Menu, X } from 'lucide-react';
-// IMPORTING YOUR SPECIFIC LOGO FILE
 import Logo from '../assets/Logo_cir.png';
 
 const Navbar = () => {
@@ -19,7 +18,7 @@ const Navbar = () => {
     { name: 'About', href: '#about' },
     { name: 'Services', href: '#services' },
     { name: 'Doctors', href: '#doctors' },
-    // FIXED: Point to #appointment so it scrolls to the form
+    // FIXED: Points to #appointment so it scrolls to the form
     { name: 'Contact', href: '#appointment' }, 
   ];
 

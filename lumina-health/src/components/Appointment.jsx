@@ -5,19 +5,9 @@ const Appointment = () => {
   // --- CONFIGURATION ---
   const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyznHixbNannkZHx9YEi1E2rMp4yDItu33CaaKd8Vagp68BAp2G1TbcCYc86HLey7Q/exec";
 
-  // --- DATA ---
-  const countries = [
-    { code: "+93", name: "Afghanistan", flag: "🇦🇫" },
-    { code: "+1", name: "United States", flag: "🇺🇸" },
-    { code: "+91", name: "India", flag: "🇮🇳" },
-    { code: "+44", name: "United Kingdom", flag: "🇬🇧" },
-    // ... (Keep the rest of your country list here)
-  ];
-
   const [formData, setFormData] = useState({
     name: '',
     phone: '',
-    country: countries.find(c => c.name === "United States") || countries[0], 
     date: '',
     time: 'Morning (9AM - 12PM)',
     department: '',
@@ -26,17 +16,14 @@ const Appointment = () => {
 
   const [errors, setErrors] = useState({});
   const [isTimeOpen, setIsTimeOpen] = useState(false);
-  const [isCountryOpen, setIsCountryOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [copiedId, setCopiedId] = useState(null);
 
-  const countryRef = useRef(null);
   const timeRef = useRef(null);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (countryRef.current && !countryRef.current.contains(event.target)) setIsCountryOpen(false);
       if (timeRef.current && !timeRef.current.contains(event.target)) setIsTimeOpen(false);
     };
     document.addEventListener("mousedown", handleClickOutside);
@@ -92,11 +79,12 @@ const Appointment = () => {
     setLoading(true);
 
     const dataToSend = new URLSearchParams();
+    // Action required for the backend script
+    dataToSend.append("action", "create");
     dataToSend.append("date", formData.date);
     dataToSend.append("time", formData.time);
     dataToSend.append("name", formData.name);
     dataToSend.append("phone", formData.phone);
-    dataToSend.append("countryCode", formData.country.code);
     dataToSend.append("department", formData.department);
     dataToSend.append("message", formData.message);
 
@@ -111,7 +99,7 @@ const Appointment = () => {
       setLoading(false);
       setSubmitted(true);
       setFormData({
-        name: '', phone: '', country: countries.find(c => c.name === "United States") || countries[0], date: '', time: 'Morning (9AM - 12PM)', department: '', message: ''
+        name: '', phone: '', date: '', time: 'Morning (9AM - 12PM)', department: '', message: ''
       });
       setTimeout(() => setSubmitted(false), 5000); 
     } catch (error) {
@@ -128,7 +116,6 @@ const Appointment = () => {
   ];
 
   return (
-    // FIXED: Changed id="Contact" to id="appointment" to match Navbar links
     <section id="appointment" className="py-8 lg:py-10 relative overflow-hidden bg-slate-50">
       
       <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-blue-50 to-transparent"></div>
@@ -203,27 +190,15 @@ const Appointment = () => {
 
                 <div className="space-y-1 relative z-30">
                   <label className="text-xs font-bold text-gray-700 flex items-center gap-1.5"><Phone size={12} className="text-primary" /> Phone Number</label>
-                  <div className="flex gap-2">
-                    <div className="relative w-[5rem] shrink-0" ref={countryRef}>
-                        <div onClick={() => setIsCountryOpen(!isCountryOpen)} className="w-full px-2 py-3 rounded-lg bg-gray-50 border border-gray-200 hover:border-blue-400 cursor-pointer flex justify-between items-center transition-all h-[46px]">
-                            <span className="text-base leading-none">{formData.country.flag}</span>
-                            <span className="text-xs font-bold text-gray-700">{formData.country.code}</span>
-                            <ChevronDown size={10} className="text-gray-400" />
-                        </div>
-                        {isCountryOpen && (
-                          <div className="absolute top-full left-0 w-64 mt-1 bg-white border border-gray-100 rounded-xl shadow-xl max-h-60 overflow-y-auto animate-in fade-in slide-in-from-top-2 duration-200 custom-scrollbar z-50">
-                             {countries.map((c, idx) => (
-                               <div key={idx} onClick={() => { setFormData({ ...formData, country: c }); setIsCountryOpen(false); }} className="px-3 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-primary cursor-pointer flex items-center gap-3 transition-colors border-b border-gray-50 last:border-0">
-                                 <span className="text-lg">{c.flag}</span>
-                                 <span className="font-medium text-gray-500 w-10 text-right">{c.code}</span>
-                                 <span className="truncate text-xs font-bold">{c.name}</span>
-                               </div>
-                             ))}
-                          </div>
-                        )}
-                    </div>
-                    <input type="tel" name="phone" value={formData.phone} onChange={handleChange} placeholder="00000 00000" className={`flex-1 px-3 py-3 rounded-lg bg-gray-50 border ${errors.phone ? 'border-red-500 bg-red-50' : 'border-gray-200 hover:border-blue-400'} focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all duration-300 font-medium text-gray-700 placeholder-gray-400 text-sm h-[46px]`} />
-                  </div>
+                  {/* SIMPLIFIED PHONE INPUT */}
+                  <input 
+                    type="tel" 
+                    name="phone" 
+                    value={formData.phone} 
+                    onChange={handleChange} 
+                    placeholder="12345 67890" 
+                    className={`w-full px-3 py-3 rounded-lg bg-gray-50 border ${errors.phone ? 'border-red-500 bg-red-50' : 'border-gray-200 hover:border-blue-400'} focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all duration-300 font-medium text-gray-700 placeholder-gray-400 text-sm`} 
+                  />
                   {errors.phone && <p className="text-[10px] text-red-500 font-bold ml-1">{errors.phone}</p>}
                 </div>
 
