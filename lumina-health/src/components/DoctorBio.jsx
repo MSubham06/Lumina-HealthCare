@@ -1,14 +1,54 @@
-import React, { useEffect } from 'react';
-import { ArrowLeft, MapPin, Clock, Phone, Mail, Star, GraduationCap, Award, ShieldCheck, Heart, Stethoscope, Syringe, Baby } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { ArrowLeft, MapPin, Clock, Phone, Mail, Star, GraduationCap, Award, ShieldCheck, Heart, Stethoscope, Syringe, Baby, ChevronDown, ChevronUp } from 'lucide-react';
+// 1. Import useNavigate
+import { Link, useNavigate } from 'react-router-dom';
 import DoctorProfile from '../assets/doctor_profile.jpg';
 import Logo3D from '../assets/logo-3d.jpg';
 
 const DoctorBio = () => {
+  const [showAllStories, setShowAllStories] = useState(false);
+  const navigate = useNavigate(); // 2. Initialize Navigation Hook
+
   // Ensure page starts at top when visited
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+
+  // 3. Robust Booking Function
+  const handleBookNow = () => {
+    // Navigate to Home Page first
+    navigate('/');
+    
+    // Wait 100ms for the Home page to load, then scroll to the section
+    setTimeout(() => {
+      const appointmentSection = document.getElementById('appointment');
+      if (appointmentSection) {
+        appointmentSection.scrollIntoView({ behavior: 'smooth' });
+      }
+    }, 100);
+  };
+
+  // --- DATA: Patient Stories (15 Total) ---
+  const stories = [
+    { id: 1, author: "Mark T.", quote: "The clinic is spotless and Dr. Bennett actually listens. I didn't feel rushed at all." },
+    { id: 2, author: "Emily R.", quote: "Booking online was so easy. Highly recommended for anyone with heart concerns." },
+    { id: 3, author: "Sarah Jenkins", quote: "Dr. Bennett diagnosed my condition when two other doctors missed it. She is a lifesaver." },
+    { id: 4, author: "David Chen", quote: "The pediatric care for my son was outstanding. He actually likes going to the doctor now!" },
+    { id: 5, author: "Amanda L.", quote: "Professional, kind, and incredibly knowledgeable. The best healthcare experience I've had." },
+    { id: 6, author: "Robert Fox", quote: "I appreciate the holistic approach. She looked at my lifestyle, not just my symptoms." },
+    { id: 7, author: "Lisa M.", quote: "Great follow-up care. The staff called me the next day to check how I was feeling." },
+    { id: 8, author: "James Wilson", quote: "Wait times were minimal, and the diagnosis was spot on. Very efficient clinic." },
+    { id: 9, author: "Patricia G.", quote: "She handled my mother's complex heart medication plan with such patience and clarity." },
+    { id: 10, author: "Tom H.", quote: "A doctor who truly cares. She spent 30 minutes just explaining my lab results to me." },
+    { id: 11, author: "Kelly S.", quote: "The facility is state-of-the-art, but the warm atmosphere makes the difference." },
+    { id: 12, author: "Michael B.", quote: "Finally, a doctor who explains things in plain English. I feel in control of my health." },
+    { id: 13, author: "Jessica P.", quote: "I was nervous about my procedure, but the team made me feel completely at ease." },
+    { id: 14, author: "Omar K.", quote: "Dr. Bennett is simply the best in the city. I drive 45 minutes just to see her." },
+    { id: 15, author: "Linda W.", quote: "Transparent pricing, friendly staff, and excellent medical care. 10/10." },
+  ];
+
+  // Logic: Show 4 initially, then all if expanded
+  const visibleStories = showAllStories ? stories : stories.slice(0, 4);
 
   return (
     <div className="bg-gray-50 min-h-screen font-sans selection:bg-secondary/30 pb-20">
@@ -29,18 +69,16 @@ const DoctorBio = () => {
 
       <div className="container mx-auto px-4 md:px-6 py-10 max-w-6xl">
         
-        {/* HERO CARD - Stronger Shadow */}
+        {/* HERO CARD */}
         <div className="bg-white rounded-[2.5rem] p-8 md:p-12 shadow-[0_35px_60px_-15px_rgba(0,0,0,0.3)] mb-10 flex flex-col md:flex-row gap-12 items-center relative overflow-hidden">
-          {/* Background decoration */}
           <div className="absolute top-0 right-0 w-96 h-96 bg-blue-50/50 rounded-full blur-3xl -z-0 translate-x-1/2 -translate-y-1/2"></div>
           
-          {/* Image - Very Dark, Deep Shadow */}
+          {/* Image */}
           <div className="relative w-full max-w-sm flex-shrink-0 z-10">
              <div className="absolute inset-0 bg-primary/30 blur-[40px] rounded-full scale-95"></div>
              <img 
                src={DoctorProfile} 
                alt="Dr. Sarah Bennett" 
-               // UPDATED SHADOW: Harder and Darker
                className="relative w-full h-auto rounded-[2rem] shadow-[0_25px_50px_-12px_rgba(0,0,0,0.7)] border-4 border-white transform hover:scale-[1.01] transition-transform duration-500"
              />
              <div className="absolute bottom-6 right-6 bg-white/95 backdrop-blur-md px-4 py-2 rounded-xl shadow-[0_10px_20px_rgba(0,0,0,0.2)] flex items-center gap-2">
@@ -80,7 +118,6 @@ const DoctorBio = () => {
           
           {/* LEFT COLUMN: Contact Info */}
           <div className="lg:col-span-1 space-y-6">
-             {/* Stronger Shadow on Contact Card */}
              <div className="bg-white p-8 rounded-3xl shadow-[0_20px_40px_-10px_rgba(0,0,0,0.2)] border border-gray-100 sticky top-24">
                <h3 className="text-xl font-black text-gray-900 mb-6 flex items-center gap-2">
                  Contact & Location
@@ -102,8 +139,11 @@ const DoctorBio = () => {
                  </div>
                </div>
 
-               {/* Stronger Button Shadow */}
-               <button className="w-full mt-8 bg-primary text-white font-bold py-4 rounded-xl shadow-[0_15px_30px_-5px_rgba(14,165,233,0.6)] hover:shadow-[0_20px_40px_-5px_rgba(14,165,233,0.7)] hover:-translate-y-1 transition-all">
+               {/* FIXED BUTTON: Uses handleBookNow to navigate correctly */}
+               <button 
+                 onClick={handleBookNow}
+                 className="block w-full mt-8 bg-primary text-white font-bold py-4 rounded-xl shadow-[0_15px_30px_-5px_rgba(14,165,233,0.6)] hover:shadow-[0_20px_40px_-5px_rgba(14,165,233,0.7)] hover:-translate-y-1 transition-all text-center"
+               >
                  Book Appointment Now
                </button>
              </div>
@@ -112,7 +152,7 @@ const DoctorBio = () => {
           {/* RIGHT COLUMN: Services & Reviews */}
           <div className="lg:col-span-2 space-y-8">
             
-            {/* Services Grid - Stronger Shadow */}
+            {/* Services Grid */}
             <div className="bg-white p-8 md:p-10 rounded-3xl shadow-[0_20px_40px_-10px_rgba(0,0,0,0.2)] border border-gray-100">
               <h3 className="text-2xl font-black text-gray-900 mb-8">Medical Services</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -145,17 +185,35 @@ const DoctorBio = () => {
 
             {/* Testimonials */}
             <div>
-              <h3 className="text-2xl font-black text-gray-900 mb-6 px-2">Patient Stories</h3>
+              <h3 className="text-2xl font-black text-gray-900 mb-6 px-2 flex items-center justify-between">
+                Patient Stories
+                <span className="text-sm font-bold text-gray-400 bg-gray-100 px-3 py-1 rounded-full">{stories.length} Reviews</span>
+              </h3>
+              
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <Testimonial 
-                  quote="The clinic is spotless and Dr. Bennett actually listens. I didn't feel rushed at all."
-                  author="Mark T."
-                />
-                <Testimonial 
-                  quote="Booking online was so easy. Highly recommended for anyone with heart concerns."
-                  author="Emily R."
-                />
+                {visibleStories.map((story) => (
+                  <Testimonial 
+                    key={story.id}
+                    quote={story.quote}
+                    author={story.author}
+                  />
+                ))}
               </div>
+
+              {/* SEE MORE / SHOW LESS BUTTON */}
+              <div className="mt-8 text-center">
+                <button 
+                  onClick={() => setShowAllStories(!showAllStories)}
+                  className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-white border border-gray-200 text-gray-700 font-bold hover:bg-gray-50 hover:border-gray-300 transition-all shadow-sm"
+                >
+                  {showAllStories ? (
+                    <>Show Less <ChevronUp size={16} /></>
+                  ) : (
+                    <>See More Stories <ChevronDown size={16} /></>
+                  )}
+                </button>
+              </div>
+
             </div>
 
           </div>
@@ -165,7 +223,7 @@ const DoctorBio = () => {
   );
 };
 
-/* --- Helper Components for Cleaner Code --- */
+/* --- Helper Components --- */
 
 const Badge = ({ icon, text }) => (
   <span className="px-4 py-2 bg-white text-gray-800 rounded-full text-sm font-bold flex items-center gap-2 border border-gray-200 shadow-[0_4px_10px_rgba(0,0,0,0.08)]">
@@ -198,12 +256,14 @@ const ServiceCard = ({ icon, title, desc, color }) => (
 );
 
 const Testimonial = ({ quote, author }) => (
-  <div className="bg-white p-6 rounded-2xl shadow-[0_10px_30px_-10px_rgba(0,0,0,0.15)] border border-gray-50 hover:-translate-y-1 transition-transform">
-    <div className="flex text-yellow-400 mb-3 gap-1 filter drop-shadow-sm">
-      {[1,2,3,4,5].map(i => <Star key={i} fill="currentColor" size={16} />)}
+  <div className="bg-white p-6 rounded-2xl shadow-[0_10px_30px_-10px_rgba(0,0,0,0.15)] border border-gray-50 hover:-translate-y-1 transition-transform h-full flex flex-col justify-between">
+    <div>
+      <div className="flex text-yellow-400 mb-3 gap-1 filter drop-shadow-sm">
+        {[1,2,3,4,5].map(i => <Star key={i} fill="currentColor" size={16} />)}
+      </div>
+      <p className="text-gray-600 italic mb-4 leading-relaxed">"{quote}"</p>
     </div>
-    <p className="text-gray-600 italic mb-4 leading-relaxed">"{quote}"</p>
-    <p className="font-bold text-gray-900 text-sm border-t border-gray-100 pt-3 inline-block">— {author}</p>
+    <p className="font-bold text-gray-900 text-sm border-t border-gray-100 pt-3">— {author}</p>
   </div>
 );
 

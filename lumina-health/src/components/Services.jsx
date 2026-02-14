@@ -123,13 +123,14 @@ const Services = () => {
                 {service.title}
               </h3>
               
-              {/* Description - UPDATED: Removed line-clamp classes to show full text */}
+              {/* Description */}
               <p className="text-xs md:text-base text-gray-500 font-medium leading-relaxed mb-4 md:mb-6 flex-grow">
                 {service.description}
               </p>
 
+              {/* FIXED LINK: changed #contact to #appointment */}
               <a 
-                href="#contact" 
+                href="#appointment" 
                 className="inline-flex items-center gap-1 md:gap-2 text-primary font-bold text-xs md:text-sm uppercase tracking-wider group-hover:gap-2 md:group-hover:gap-3 transition-all mt-auto"
               >
                 Book Now <ArrowRight size={14} className="md:w-4 md:h-4" />
