@@ -15,6 +15,14 @@ const Footer = () => {
     'General Care', 'Cardiology', 'Pediatrics', 'Neurology'
   ];
 
+  // Configured Social Links
+  const socialMedia = [
+    { Icon: Facebook, link: "https://www.instagram.com/irl.subhhh/" }, // Facebook -> Insta link
+    { Icon: Twitter, link: "https://www.instagram.com/irl.subhhh/" },  // Twitter -> Insta link
+    { Icon: Instagram, link: "https://www.instagram.com/irl.subhhh/" },
+    { Icon: Linkedin, link: "https://www.linkedin.com/in/msubham/" }
+  ];
+
   return (
     <footer className="bg-slate-900 text-slate-300 py-10 md:py-14 relative overflow-hidden">
       
@@ -41,9 +49,16 @@ const Footer = () => {
               Providing world-class healthcare with a focus on precision, comfort, and patient-centered excellence.
             </p>
             
+            {/* Social Icons with Links */}
             <div className="flex gap-3">
-              {[Facebook, Twitter, Instagram, Linkedin].map((Icon, i) => (
-                <a key={i} href="#" className="p-2.5 rounded-full bg-slate-800 hover:bg-primary hover:text-white hover:-translate-y-1 transition-all duration-300 border border-slate-700 hover:border-primary">
+              {socialMedia.map(({ Icon, link }, i) => (
+                <a 
+                  key={i} 
+                  href={link} 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="p-2.5 rounded-full bg-slate-800 hover:bg-primary hover:text-white hover:-translate-y-1 transition-all duration-300 border border-slate-700 hover:border-primary"
+                >
                   <Icon size={16} />
                 </a>
               ))}

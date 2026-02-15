@@ -36,7 +36,8 @@ function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   return (
-    <div className="font-sans text-gray-900 bg-background antialiased selection:bg-secondary/30">
+    // ADDED: select-none (no text selection) and cursor-default (arrow cursor instead of I-beam)
+    <div className="font-sans text-gray-900 bg-background antialiased selection:bg-secondary/30 select-none cursor-default">
       <Routes>
         
         {/* PUBLIC: Main Landing Page */}

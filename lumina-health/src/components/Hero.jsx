@@ -1,11 +1,13 @@
 import React from 'react';
 import { ArrowRight, Star, ShieldCheck } from 'lucide-react';
-// 👇 THIS IS THE FIX: Importing your specific file
 import DoctorImage from '../assets/Banner2.png'; 
 
 const Hero = () => {
   return (
-    <section className="relative pt-32 pb-20 md:pt-40 md:pb-28 overflow-hidden bg-gradient-to-br from-white via-blue-50/30 to-white">
+    <section 
+      // ADDED: select-none (removes I-Beam) and cursor-pointer (hand icon)
+      className="relative pt-32 pb-20 md:pt-40 md:pb-28 overflow-hidden bg-gradient-to-br from-white via-blue-50/30 to-white cursor-pointer select-none"
+    >
       <div className="container mx-auto px-4 md:px-6">
         <div className="flex flex-col md:flex-row items-center gap-12 lg:gap-20">
           
