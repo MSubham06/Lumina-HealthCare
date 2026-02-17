@@ -1,12 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Search, RefreshCw, Calendar, Clock, Phone, MessageSquare, Filter, Loader2, CheckCircle, Trash2, Plus, X, ChevronDown, LogOut, Check, Activity, RotateCcw } from 'lucide-react';
+import { Search, RefreshCw, Calendar, Clock, Phone, MessageSquare, Filter, Loader2, CheckCircle, Trash2, Plus, X, ChevronDown, LogOut, Check, Activity, RotateCcw, Smartphone } from 'lucide-react';
 
 // --- LOGO SETUP ---
-// 1. If you have the image, UNCOMMENT the line below:
 import Logo from '../assets/Logo_cir.png'; 
-
-// 2. If you don't have the image yet, leave it commented.
-// const Logo = null; 
 
 const ReceptionDashboard = () => {
   // --- CONFIGURATION ---
@@ -16,7 +12,11 @@ const ReceptionDashboard = () => {
   const [loading, setLoading] = useState(true);
   const [actionLoading, setActionLoading] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
+  const [isLandscape, setIsLandscape] = useState(true);
   
+  // NEW: State to trigger portrait-only mode for booking
+  const [mustRotateToBook, setMustRotateToBook] = useState(false);
+
   // FILTERS
   const [statusFilter, setStatusFilter] = useState('All'); 
   const [dateFilter, setDateFilter] = useState('All'); 
@@ -44,6 +44,26 @@ const ReceptionDashboard = () => {
   const dropdownRef = useRef(null);
   const modalTimeRef = useRef(null);
   const modalDeptRef = useRef(null);
+
+  // --- ORIENTATION DETECTION ---
+  useEffect(() => {
+    const checkOrientation = () => {
+      const isMobile = window.innerWidth <= 768;
+      const portrait = window.innerHeight > window.innerWidth;
+      const currentLandscape = !(isMobile && portrait);
+      setIsLandscape(currentLandscape);
+      
+      // If user rotates to portrait while the rotate-blocker is active, open the modal
+      if (!currentLandscape && mustRotateToBook) {
+        setMustRotateToBook(false);
+        setIsModalOpen(true);
+      }
+    };
+
+    checkOrientation();
+    window.addEventListener('resize', checkOrientation);
+    return () => window.removeEventListener('resize', checkOrientation);
+  }, [mustRotateToBook]);
 
   // --- CLICK OUTSIDE HANDLERS ---
   useEffect(() => {
@@ -155,6 +175,17 @@ const ReceptionDashboard = () => {
     setNewBooking({ name: '', phone: '', date: '', time: 'Morning (9AM - 12PM)', department: 'General', message: '' });
   };
 
+  // Logic to handle New Booking Click
+  const handleNewBookingClick = () => {
+    if (isLandscape && window.innerWidth <= 768) {
+        // If in landscape on mobile, tell them to rotate
+        setMustRotateToBook(true);
+    } else {
+        // Otherwise, open normally
+        setIsModalOpen(true);
+    }
+  };
+
   useEffect(() => {
     fetchData();
     const interval = setInterval(fetchData, 30000);
@@ -194,6 +225,29 @@ const ReceptionDashboard = () => {
   return (
     <div className="min-h-screen bg-[#F8FAFC] font-sans text-slate-900">
       
+      {/* 1. TILT MESSAGE FOR MOBILE (TABLE VIEW) */}
+      {!isLandscape && !isModalOpen && !mustRotateToBook && (
+        <div className="fixed inset-0 z-[100] bg-slate-900 flex flex-col items-center justify-center p-8 text-center text-white md:hidden">
+          <div className="w-20 h-20 bg-blue-600/20 rounded-full flex items-center justify-center mb-6 animate-pulse">
+            <Smartphone size={40} className="text-blue-400 rotate-90" />
+          </div>
+          <h2 className="text-2xl font-bold mb-2">Better in Landscape</h2>
+          <p className="text-slate-400 text-sm leading-relaxed">Please rotate your device to landscape mode for the best view of the appointment table.</p>
+        </div>
+      )}
+
+      {/* 2. NEW: ROTATE TO VERTICAL FOR BOOKING */}
+      {mustRotateToBook && (
+        <div className="fixed inset-0 z-[200] bg-slate-900 flex flex-col items-center justify-center p-8 text-center text-white">
+          <div className="w-20 h-20 bg-blue-600/20 rounded-full flex items-center justify-center mb-6 animate-pulse">
+            <Smartphone size={40} className="text-blue-400" />
+          </div>
+          <h2 className="text-2xl font-bold mb-2">Rotate to Portrait</h2>
+          <p className="text-slate-400 text-sm leading-relaxed">Please rotate your phone vertically to fill the booking form.</p>
+          <button onClick={() => setMustRotateToBook(false)} className="mt-6 text-xs text-slate-500 underline">Cancel</button>
+        </div>
+      )}
+
       {/* NAVBAR */}
       <nav className="fixed top-0 left-0 right-0 h-16 bg-white border-b border-slate-300 z-50 flex items-center justify-between px-6 shadow-sm">
         <div className="flex items-center gap-3">
@@ -215,19 +269,19 @@ const ReceptionDashboard = () => {
       </nav>
 
       {/* CONTENT */}
-      <div className="pt-24 px-6 lg:px-8 pb-10 max-w-[1600px] mx-auto space-y-8">
+      <div className="pt-24 px-4 sm:px-6 lg:px-8 pb-10 max-w-[1600px] mx-auto space-y-8">
         
-        {/* HEADER */}
-        <div className="flex flex-col md:flex-row justify-between items-end gap-4">
-          <div>
-            <h2 className="text-3xl font-bold text-slate-900">Dashboard</h2>
+        {/* HEADER AREA - FIXED LAYOUT */}
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+          <div className="w-full sm:w-auto">
+            <h2 className="text-2xl sm:text-3xl font-bold text-slate-900">Dashboard</h2>
             <p className="text-slate-500 text-sm mt-1">Manage patient flow and appointments.</p>
           </div>
-          <div className="flex gap-3">
-            <button onClick={fetchData} className="p-3 bg-white border border-slate-300 rounded-xl hover:bg-slate-50 text-slate-600 transition-all shadow-sm">
+          <div className="flex items-center gap-3 w-full sm:w-auto">
+            <button onClick={fetchData} className="flex-1 sm:flex-none p-3 bg-white border border-slate-300 rounded-xl hover:bg-slate-50 text-slate-600 transition-all shadow-sm flex items-center justify-center">
               <RefreshCw size={20} className={loading ? "animate-spin" : ""} />
             </button>
-            <button onClick={() => setIsModalOpen(true)} className="flex items-center gap-2 px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl shadow-lg shadow-blue-200 transition-all hover:-translate-y-0.5 border border-blue-700">
+            <button onClick={handleNewBookingClick} className="flex-[3] sm:flex-none flex items-center justify-center gap-2 px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl shadow-lg shadow-blue-200 transition-all hover:-translate-y-0.5 border border-blue-700 text-sm whitespace-nowrap">
               <Plus size={20} /> New Booking
             </button>
           </div>
@@ -257,8 +311,8 @@ const ReceptionDashboard = () => {
         <div className="bg-white rounded-[24px] shadow-xl shadow-slate-100/60 border border-slate-300 overflow-hidden">
           
           {/* TOOLBAR */}
-          <div className="p-5 border-b border-slate-300 bg-white flex flex-col sm:flex-row items-center gap-4 justify-between">
-            <div className="flex items-center gap-4 w-full sm:w-auto flex-1">
+          <div className="p-5 border-b border-slate-300 bg-white flex flex-col lg:flex-row items-center gap-4 justify-between">
+            <div className="flex items-center gap-4 w-full lg:max-w-md">
               <Search size={20} className="text-slate-400" />
               <input 
                 type="text" 
@@ -269,16 +323,16 @@ const ReceptionDashboard = () => {
               />
             </div>
 
-            <div className="flex gap-3 items-center">
+            <div className="flex flex-wrap gap-2 items-center w-full lg:w-auto justify-start sm:justify-end">
                 {(statusFilter !== 'All' || dateFilter !== 'All' || searchTerm !== '') && (
-                  <button onClick={resetFilters} className="flex items-center gap-2 px-3 py-2.5 text-xs font-bold text-red-600 hover:bg-red-50 rounded-lg transition-colors border border-transparent hover:border-red-100">
-                    <RotateCcw size={14} /> Reset
+                  <button onClick={resetFilters} className="flex items-center gap-2 px-3 py-2 text-xs font-bold text-red-600 hover:bg-red-50 rounded-lg transition-colors border border-transparent hover:border-red-100">
+                    <RotateCcw size={14} /> <span className="hidden sm:inline">Reset</span>
                   </button>
                 )}
 
                 <div className="relative">
-                  <button onClick={() => { setIsDateFilterOpen(!isDateFilterOpen); setIsFilterOpen(false); }} className="flex items-center gap-2 px-4 py-2.5 bg-white border border-slate-300 rounded-xl text-xs font-bold text-slate-700 hover:bg-slate-50 transition-colors">
-                    <Calendar size={14} /> {dateFilter === 'All' ? 'Any Date' : dateFilter} <ChevronDown size={14} className="opacity-50" />
+                  <button onClick={() => { setIsDateFilterOpen(!isDateFilterOpen); setIsFilterOpen(false); }} className="flex items-center gap-2 px-3 sm:px-4 py-2 bg-white border border-slate-300 rounded-xl text-xs font-bold text-slate-700 hover:bg-slate-50 transition-colors">
+                    <Calendar size={14} /> {dateFilter === 'All' ? 'Date' : dateFilter} <ChevronDown size={14} className="opacity-50" />
                   </button>
                   {isDateFilterOpen && (
                     <div className="absolute right-0 mt-2 w-40 bg-white border border-slate-200 rounded-xl shadow-xl z-20 overflow-hidden animate-in fade-in zoom-in-95">
@@ -290,8 +344,8 @@ const ReceptionDashboard = () => {
                 </div>
 
                 <div className="relative">
-                  <button onClick={() => { setIsFilterOpen(!isFilterOpen); setIsDateFilterOpen(false); }} className="flex items-center gap-2 px-4 py-2.5 bg-white border border-slate-300 rounded-xl text-xs font-bold text-slate-700 hover:bg-slate-50 transition-colors">
-                    <Filter size={14} /> {statusFilter === 'All' ? 'All Status' : statusFilter} <ChevronDown size={14} className="opacity-50" />
+                  <button onClick={() => { setIsFilterOpen(!isFilterOpen); setIsDateFilterOpen(false); }} className="flex items-center gap-2 px-3 sm:px-4 py-2 bg-white border border-slate-300 rounded-xl text-xs font-bold text-slate-700 hover:bg-slate-50 transition-colors">
+                    <Filter size={14} /> {statusFilter === 'All' ? 'Status' : statusFilter} <ChevronDown size={14} className="opacity-50" />
                   </button>
                   {isFilterOpen && (
                     <div className="absolute right-0 mt-2 w-40 bg-white border border-slate-200 rounded-xl shadow-xl z-20 overflow-hidden animate-in fade-in zoom-in-95">
@@ -304,8 +358,8 @@ const ReceptionDashboard = () => {
             </div>
           </div>
 
-          <div className="overflow-x-auto min-h-[300px]">
-            <table className="w-full text-left border-collapse">
+          <div className="overflow-x-auto min-h-[300px] scrollbar-hide">
+            <table className="w-full text-left border-collapse min-w-[900px]">
               <thead>
                 <tr className="bg-slate-100 border-b border-slate-300">
                   {['Patient Name', 'Status', 'Date', 'Time', 'Contact', 'Dept', 'Msg', 'Action'].map((h, i) => (

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { RefreshCw, WifiOff } from 'lucide-react';
+import { RefreshCw } from 'lucide-react';
 // Import the image from your assets folder
 import doctorImage from '../assets/offline-doctor.jpg';
 
@@ -8,6 +8,7 @@ const OfflinePage = () => {
 
   const handleTryAgain = () => {
     setIsChecking(true);
+    // Reloads the page to check if connection is restored
     setTimeout(() => {
       window.location.reload();
     }, 1000);
@@ -20,13 +21,8 @@ const OfflinePage = () => {
       {/* Centered Content Container */}
       <div className="w-full max-w-sm md:max-w-md flex flex-col items-center text-center">
         
-        {/* --- TOP ICON SECTION --- */}
-        <div className="mb-6 animate-bounce">
-            <WifiOff className="text-gray-300" size={32} />
-        </div>
-
         {/* --- IMAGE SECTION --- */}
-        <div className="mb-4">
+        <div className="mb-6">
           <img 
             src={doctorImage} 
             alt="Doctor Sleeping Offline" 
