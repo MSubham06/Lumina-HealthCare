@@ -1,4 +1,4 @@
-# Lumina Health Clinic Web App (Private Commercial Project)
+# Lumina Health Clinic Web App
 
 > ⚠️ **Private & Commercial Project**
 >
